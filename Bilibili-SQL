@@ -1,0 +1,24 @@
+-- 使用sql_store这个数据库 也可以直接双击
+USE sql_store; 
+-- 调取table *表示全部 也可以在后面直接加关键词 查找变量 根据某一变量排序
+SELECT * 
+FROM customers
+WHERE customer_id=3
+
+-- select clause 选择子句; 
+SELECT name, unit_price, unit_price * 1.1 AS 'new_price' FROM products
+
+-- where 查找信息 <,>,>=,<=,=,!=,<>
+SELECT *
+FROM orders
+WHERE order_date >= '2018-01-01'
+
+-- AND, OR, NOT. AND优先于OR
+SELECT * 
+FROM order_items
+WHERE product_id=6 AND quantity * unit_price >=30
+
+-- in operaor in运算符
+SELECT *
+FROM products
+WHERE quantity_in_stock IN (49, 38, 72)
