@@ -1,0 +1,87 @@
+-- 使用sql_store这个数据库 也可以直接双击
+USE sql_store; 
+-- 调取table *表示全部 也可以在后面直接加关键词 查找变量 根据某一变量排序
+SELECT * 
+FROM customers
+WHERE customer_id=3
+
+-- select clause 选择子句; 
+SELECT name, unit_price, unit_price * 1.1 AS 'new_price' FROM products
+
+-- where 查找信息 <,>,>=,<=,=,!=,<>
+SELECT *
+FROM orders
+WHERE order_date >= '2018-01-01'
+
+-- AND, OR, NOT. AND优先于OR
+SELECT * 
+FROM order_items
+WHERE product_id=6 AND quantity * unit_price >=30
+
+-- in operaor in运算符
+SELECT *
+FROM products
+WHERE quantity_in_stock IN (49, 38, 72)
+
+-- BETWEEN运算符
+SELECT *
+FROM customers
+WHERE birth_date BETWEEN '1990-01-01' AND'2020-01-01'
+
+-- LIKE 搜索包含特定字符的信息 
+-- % any number of characters
+-- _ single character
+-- 都要用单引号
+
+SELECT *
+FROM customers
+WHERE address LIKE '%trail%' 
+      OR address LIKE '%avenue' 
+     
+-- REGEXP regular expression  表示包含 不需要%-
+WHERE address REGEXP 'trail'
+-- 正则表达式的一些符号
+-- ^--   '^field' character start with field
+-- $-- 'field$' character with end of field
+-- |-- 'field|mac' 包含field 或 mac
+-- ‘[gim]e’    ge ie me 
+-- '[abcd]e'='[a-d]e'
+
+SELECT *
+FROM customers
+WHERE  first_name REGEXP 'elka|ambur';
+
+SELECT *
+FROM customers
+WHERE last_name REGEXP 'ey$|on$';
+
+SELECT *
+FROM customers
+WHERE last_name REGEXP '^my|se';
+
+SELECT *
+FROM customers
+WHERE last_name REGEXP 'b[ur]';
+
+-- 查找NULL值 
+SELECT *
+FROM orders
+WHERE shipper_id IS NULL
+ OR shipped_date IS NULL;
+ 
+-- ORDER BY. --DESC
+SELECT *
+FROM order_items
+WHERE  order_id = 2
+ORDER BY  quantity* unit_price DESC
+
+-- LIMIT 只想显示表格的前三行
+LIMIT 3
+-- 跳过前6条取之后的三条
+LIMIT 6, 3
+
+SELECT *
+FROM  customers
+ORDER BY points DESC
+LIMIT 3
+
