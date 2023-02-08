@@ -1,0 +1,39 @@
+-- inner joins 内连接 + 简写
+SELECT order_id, o.customer_id, first_name
+FROM orders o 
+JOIN customers c
+    ON o.customer_id=c.customer_id;
+ 
+-- joining across database 
+SELECT *
+FROM order_items oi
+JOIN sql_inventory.products p
+    ON oi.product_id=p.product_id;
+    
+-- self joins 
+USE sql_hr;
+SELECT e.employee_id, e.first_name AS employee_first_name,
+       m.first_name AS manager 
+FROM employees e
+JOIN employees m
+    ON e.reports_to=m.employee_id;
+    
+-- join multiple tables
+USE sql_store;
+SELECT 
+     o.order_id,
+     o.order_date,
+     c.first_name,
+     c.last_name,
+     os.name AS status
+FROM orders o
+JOIN customers c
+     ON o.customer_id=c.customer_id 
+JOIN order_statuses os
+     ON o.status=os.order_status_id;
+
+-- compound join condition 复合连接方式
+-- implicit join syntax 隐式连接语法 不建议用 
+SELECT *
+FROM orders o, customers c
+WHERE o.customer_id=c.customer_id;
