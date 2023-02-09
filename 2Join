@@ -37,3 +37,58 @@ JOIN order_statuses os
 SELECT *
 FROM orders o, customers c
 WHERE o.customer_id=c.customer_id;
+
+-- outer joins 外连接包含left join 和right join 
+-- left join 左边的表全部返回+包含 on部分返回
+SELECT 
+   p.product_id,
+   p.name,
+   o.quantity
+FROM  order_items o
+RIGHT JOIN products p
+          ON p.product_id=o.product_id;
+  
+  -- outer joins between multiple tables 
+SELECT 
+    o.order_date,
+    o.order_id,
+    c.first_name,
+    s.name AS shipper,
+    os.name AS status
+FROM orders o
+JOIN customers c
+    ON o.customer_id=c.customer_id
+LEFT JOIN shippers s
+    ON o.shipper_id=s.shipper_id
+LEFT JOIN order_statuses os
+    ON os.order_status_id=o.status
+ORDER BY status;
+
+-- self outer joins 自外连接
+SELECT
+    e.employee_id,
+    e.first_name AS employee,
+    m.first_name AS manager 
+FROM employees e
+LEFT JOIN   employees m
+    ON e.reports_to=m.employee_id;
+    
+-- USING clause using子句
+-- 如果index的名称在两个表之间一样 用using
+SELECT
+    o.order_id
+    c_first_name
+FROM orders o
+JOIN customers c 
+    -- ON o.customer_id=c.customer_id
+    USING (customer_id);
+    
+-- natural joins 不推荐 让表自己看着办的join方法
+SELECT
+    o.order_id,
+    c.first_name
+FROM orders o 
+NATURAL JOIN customers c
+
+-- cross join 交叉连接 卡迪尔积
+-- SELECT/FROM/ CROSS JOIN
