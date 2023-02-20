@@ -130,4 +130,61 @@ WHERE invoice_total> ALL(
   
  -- ANY operator ALL 大于最大值 ANY/SOME大于最小值
   
+  -- correlated squeries 相关子查询 自己的一个元素和自己的其他元素相比
+-- select emplyees whose salary is above the average 
+-- in their office 每位员工的office不一样 要用 office_id 分类
+SELECT *
+FROM employees e
+WHERE salary > (
+  SELECT AVG(salary)
+  FROM employees
+  WHERE office_id=e.office_id
+);
+
+-- get invoices that are larger than the clients average invoice amount
+-- 注意 一位client可能有多张invoices
+SELECT *
+FROM invoices i
+WHERE invoice_total> (
+   SELECT AVG(invoice_total)
+   FROM invoices
+   WHERE client_id=i.client_id
+);
+
+-- EXISTS Operator  loop + if
+-- select clients that have an invoice
+
+-- 该方法run括号内会产生大量数据集
+SELECT *
+FROM clients 
+WHERE client_id IN (
+  SELECT DISTINCT invoice_id
+  FROM invoices
+);
+
+SELECT *
+FROM clients c
+WHERE EXISTS(
+  SELECT client_id
+  FROM invoices
+  WHERE client_id=c.client_id
+);
+
+-- find the products that have never been ordered
+SELECT *
+FROM products p
+WHERE NOT EXISTS (
+  SELECT DISTINCT product_id
+  FROM  order_items o
+  WHERE p.product_id=o.product_id
+);
+
+-- subqueries in the SELECT caluse 
+SELECT 
+    invoice_id, 
+    invoice_total,
+    (SELECT AVG(invoice_total)
+     FROM invoices ) AS invoice_average, 
+     invoice_total - (SELECT invoice_average ) AS difference 
+FROM invoices
 
