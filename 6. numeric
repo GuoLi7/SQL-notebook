@@ -15,3 +15,40 @@ SELECT ABS(-5.2)
 SELECT RAND()
 -- 生成1-10之间的随机整数
 SELECT CEILING (10*RAND())
+
+-- string functions 
+SELECT LENGTH('sky')
+SELECT UPPER('sky')
+SELECT LOWER('sky')
+-- 消除空格
+SELECT LTRIM('  sky')
+SELECT RTRIM('sky  ')
+SELECT TRIM('  sky  ')
+-- 读取特定字符
+SELECT LEFT/RIGHT('apple',2)
+SELECT SUBSTRING('kindergarten',3,5). -- 从第三个字母取之后的五个字母
+-- 查找n的位置
+SELECT LOCATE('n', 'kindergarten')
+-- 替换
+SELECT REPLACE('kindergarden', 'garten', 'garden')
+-- 字符合并
+SELECT CONCAT('first', 'apple')
+
+-- date function 格式化日期
+-- IFNULL COALESCE
+-- IF
+SELECT 
+  order_id,
+  order_date,
+  IF(YEAR(ORDER_DATE)=YEAR(NOW()), 'active', 'archived') AS category
+FROM orders
+-- case
+SELECT 
+  order_id,
+  CASE 
+      WHEN YEAR(ORDER_DATE)=YEAR(NOW())THEN 'active'
+      WHEN YEAR(ORDER_DATE)=YEAR(NOW())-1 THEN 'last year'
+      YEAR(ORDER_DATE)<YEAR(NOW())-1 THEN 'archived'
+      ELSE 'future'
+  END AS category    
+FROM orders
